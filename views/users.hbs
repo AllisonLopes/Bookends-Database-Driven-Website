@@ -1,0 +1,127 @@
+{{!// Group members: Joe Castellano and Allison Lopes
+// Date: 11/21/2024
+// Adapted from: OSU node.js starter app Github code
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+
+<!-- users.hbs -->
+<h1>Users</h1>
+{{!-- Create a table --}}
+<table id="user-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each users.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, fname, lname, homeworld and age, in order --}}
+        {{#each users}}
+        <tr data-value="{{this.user_id}}">
+            <td>{{this.user_id}}</td>
+            <td>{{this.username}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.password}}</td>
+            <td>{{this.reading_goal}}</td>
+            <td><button onClick="deleteUser({{this.user_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_user.js"></script>
+
+
+{{!-- Form to add a user to the table  --}}
+<h2>Add new user</h2>
+<p>To add a new user, please enter the following information below:</p>
+<form id="add-user-form-ajax">
+    <label for="input-username">Username: </label>
+    <input type="text" name="input-username" id="input-username">
+    
+    <label for="input-email">Email: </label>
+    <input type="email" name="input-email" id="input-email">
+
+    <label for="input-password">Password: </label>
+    <input type="password" name="input-password" id="input-password">
+
+    <label for="input-reading_goal">Reading Goal: </label>
+    <input type="number" name="input-reading_goal" id="input-reading_goal">
+
+    <input type="submit">
+
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_user.js"></script>
+
+<h2>Users_read_books</h2>
+<table id="users_read_books-table">
+
+    {{!-- Header section --}}
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Book Title</th>
+            <th>Read Date</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the username, book title, read date in order --}}
+        {{#each users_read_books}}
+        <tr data-user-id="{{this.users_user_id}}" data-book-id="{{this.books_book_id}}">
+            <td>{{this.Username}}</td>
+            <td>{{this.[Book Title]}}</td>
+            <td>{{this.[Read Date]}}</td>
+            <td><button onClick="deleteReadBook({{this.users_user_id}}, {{this.books_book_id}})">Delete</button></td>
+
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_users_read_books.js"></script>
+
+{{!-- Form to connect a user to a book via reading  --}}
+<h2>Add a new read relationship</h2>
+<form id="add-read-form-ajax">
+
+    <label for="add-read_user">User: </label>
+    <select name="User" id = "add-read_user">
+        <option value="">Select a User</option>
+        {{#each users}}
+        <option value="{{this.user_id}}">{{this.username}}</option>
+        {{/each}}
+    </select>
+
+    <label for="add-read_title">Book Title: </label>
+    <select name="Book Title" id = "add-read_title">
+        <option value="">Select a Book Title</option>
+        {{#each books}}
+        <option value="{{this.book_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="add-read_date">Read Date: </label>
+    <input type="date" id="add-read_date" name="add-read_date">
+
+    <input type="submit" value="Add Read Relationship">
+
+</form>
+
+<script src="./js/add_users_read_books.js"></script>

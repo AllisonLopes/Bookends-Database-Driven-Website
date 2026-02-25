@@ -1,0 +1,123 @@
+{{!// Group members: Joe Castellano and Allison Lopes
+// Date: 11/21/2024
+// Adapted from: OSU node.js starter app Github code
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main}}
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script> 
+
+<!-- authors.hbs -->
+<h1>Authors</h1>
+{{!-- Create a table --}}
+<table id= "author-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each authors.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the author_id, first_name, last_name, DOB and bio, in order --}}
+        {{#each authors}}
+        <tr data-value="{{this.author_id}}">
+            <td>{{this.author_id}}</td>
+            <td>{{this.first_name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.date_of_birth}}</td>
+            <td>{{this.bio}}</td>
+            <td><button onClick="deleteAuthor({{this.author_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_author.js"></script>
+
+{{!-- Form to add an author to the table  --}}
+<h2>Add a new author</h2>
+<p>To add a new author, please enter the following information below:</p>
+<form id="add-author-form-ajax">
+    <label for="input-first_name">First Name: </label>
+    <input type="text" name="input-first_name" id="input-first_name">
+    
+    <label for="input-last_name">Last Name: </label>
+    <input type="text" name="input-first_name" id="input-last_name">
+
+    <label for="input-date_of_birth">Date of Birth: </label>
+    <input type="date" name="input-date_of_birth" id="input-date_of_birth">
+
+    <label for="input-bio">Bio: </label>
+    <textarea name="input-bio" id="input-bio" rows="5" cols="30" placeholder="Enter a brief biography here:"></textarea>
+
+    <input type="submit">
+
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_author.js"></script>
+
+
+<h2>Books_has_authors</h2>
+<table id="books_has_authors-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- Hardcoded column names to fix a bug --}}
+        <tr>
+            <th>Book Title</th>
+            <th>Author Name</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print title and concatenated name in order --}}
+        {{#each books_has_authors}}
+        <tr data-value-book="{{this.books_book_id}}" data-value-author="{{this.authors_author_id}}">
+            <td>{{this.Title}}</td>
+            <td>{{this.Name}}</td>
+            <td><button onClick="deleteBookAuthors({{this.books_book_id}}, {{this.authors_author_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_books_has_authors.js"></script>
+
+{{!-- Form to connect a book to an author via writing  --}}
+<h2>Add a new write relationship</h2>
+<form id="add-write-form-ajax">
+
+    <label for="add-write_title">Book Title: </label>
+    <select name="Book Title" id = "add-write_title">
+        <option value="">Select a Book</option>
+        {{#each books}}
+        <option value="{{this.book_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="add-write_author">Book Title: </label>
+    <select name="Author" id = "add-write_author">
+        <option value="">Select an Author</option>
+        {{#each authors}}
+        <option value="{{this.author_id}}">{{this.first_name}} {{this.last_name}}</option>
+        {{/each}}
+    </select>
+
+    <input type="submit" value="Add Write Relationship">
+
+</form>
+
+<script src="./js/add_books_has_authors.js"></script>

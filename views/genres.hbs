@@ -1,0 +1,117 @@
+{{!// Group members: Joe Castellano and Allison Lopes
+// Date: 12/1/2024
+// Adapted from: OSU node.js starter app Github code
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main}}
+
+<!-- genres.hbs -->
+<h1>Genres</h1>
+{{!-- Create a table --}}
+<table id= "genre-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- For just the first row, we print each key of the row object as a header cell so we
+        know what each column means when the page renders --}}
+        <tr>
+            {{#each genres.[0]}}
+            <th>
+                {{@key}}
+            </th>
+            {{/each}}
+            <th>delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the genre_id, name, and description in order --}}
+        {{#each genres}}
+        <tr data-value="{{this.genre_id}}">
+            <td>{{this.genre_id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.description}}</td>
+            <td><button onClick="deleteGenre({{this.genre_id}})">Delete</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_genre.js"></script>
+
+
+{{!-- Form to add a genre to the table  --}}
+<h2>Add a new genre</h2>
+<p>To add a new genre, please enter the following information below:</p>
+<form id="add-genre-form-ajax">
+    <label for="input-name">Name: </label>
+    <input type="text" name="input-name" id="input-name">
+    
+    <label for="input-description">Description: </label>
+    <input type="text" name="input-description" id="input-description">
+
+    <input type="submit">
+
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_genre.js"></script>
+
+
+<h2>Books_has_genres</h2>
+<table id= "books_has_genres-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- Hard coded column headers to fix a bug --}}
+        <tr>
+            <th>Book Title</th>
+            <th>Genre</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the book title, and genre in order --}}
+        {{#each books_has_genres}}
+        <tr data-book-id="{{this.books_book_id}}" data-genre-id="{{this.genres_genre_id}}">
+            <td>{{this.Title}}</td>
+            <td>{{this.Genre}}</td>
+            <td><button onClick="deleteBookGenres({{this.books_book_id}}, {{this.genres_genre_id}})">Delete</button></td>
+
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_books_has_genres.js"></script>
+
+
+{{!-- Form to relate a book to a genre --}}
+<h2>Relate a book to a genre</h2>
+<form id="add_book_genre-form-ajax">
+
+    <label for="add_genre_book_title">Book Title: </label>
+    <select name="genre_book_title" id = "add_genre_book_title">
+        <option value="">Select a Book</option>
+        {{#each books}}
+        <option value="{{this.book_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <label for="add_genre_name">Genre: </label>
+    <select name="genre_name" id = "add_genre_name">
+        <option value="">Select a Genre</option>
+        {{#each genres}}
+        <option value="{{this.genre_id}}">{{this.name}}</option>
+        {{/each}}
+    </select>
+
+    <input type="submit">
+
+
+</form>
+
+<script src="./js/add_books_has_genres.js"></script>

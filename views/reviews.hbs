@@ -1,0 +1,134 @@
+{{!// Group members: Joe Castellano and Allison Lopes
+// Date: 12/1/2024
+// Adapted from: OSU node.js starter app Github code
+// Source URL: https://github.com/osu-cs340-ecampus/nodejs-starter-app/tree/main
+// Review deviates from starter code in that "edit" is its own column and triggers a hidden form
+}}
+
+
+<!-- reviews.hbs -->
+<h1>Reviews</h1>
+
+{{!-- Create a table --}}
+<table id= "review-table">
+
+    {{!-- Header section --}}
+    <thead>
+
+        {{!-- Hardcoded to fix a bug --}}
+        <tr>
+            <th>Review ID</th>
+            <th>Review Date</th>
+            <th>Review Score</th>
+            <th>Review Text</th>
+            <th>User</th>
+            <th>Book</th>
+            <th>Delete</th>
+            <th>Edit</th>
+        </tr>
+    </thead>
+
+    {{!-- Body section --}}
+    <tbody>
+
+        {{!-- For each row, print the id, date, score, text, username, and book title in order --}}
+        {{#each reviews}}
+        <tr data-value="{{this.review_id}}">
+            <td>{{this.review_id}}</td>
+            <td>{{this.review_date}}</td>
+            <td>{{this.review_score}}</td>
+            <td>{{this.review_text}}</td>
+            <td>{{this.username}}</td>
+            <td>{{this.book_title}}</td>
+            <td><button onClick="deleteReview({{this.review_id}})">Delete</button></td>
+            {{!-- 
+            This is a little wonky, but this.review_text has to be surrounded by HTML quotes to handle reviews that use an apostrophe.
+            For example. "This book's amazing" would be problematic.
+            Block helper conditional is used to pass "NULL" if you're trying to edit a row that already has a blank book_id
+            --}}
+            <td><button onClick="showUpdateForm({{this.review_id}}, '{{this.review_date}}', {{this.review_score}}, &quot;{{this.review_text}}&quot;, {{#if this.user_id}}{{this.user_id}}{{else}}null{{/if}}, {{this.book_id}})">Edit</button></td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+<script src="./js/delete_review.js"></script>
+
+
+
+
+{{!-- Form to add a review to the table  --}}
+<h2>Add a new review</h2>
+<p>To add a new review, please enter the following information below:</p>
+<form id="add-review-form-ajax">
+    <label for="input-review-date">Date: </label>
+    <input type="date" name="input-review-date" id="input-review-date">
+    
+    <label for="input-score">Score: </label>
+    <input type="number" name="input-score" id="input-score", placeholder = '1-5', min="1", max="5">
+
+    <label for="input-review-text">Review Text: </label>
+    <input type="text" name="input-review-text" id="input-review-text">
+
+    <label for="add-review_user">User: </label>
+    <select name="User" id = "add-review-user">
+        <option value="">Select a User</option>
+        {{#each users}}
+        <option value="{{this.user_id}}">{{this.username}}</option>
+        {{/each}}
+    </select>
+
+    <label for="add-review_book">Book Title: </label>
+    <select name="Book Title" id = "add-review_book">
+        <option value="">Select a Book Title</option>
+        {{#each books}}
+        <option value="{{this.book_id}}">{{this.title}}</option>
+        {{/each}}
+    </select>
+
+    <input type="submit" value="Add Review">
+
+</form>
+
+{{!-- Embed our javascript to handle the DOM manipulation and AJAX request --}}
+<script src="./js/add_review.js"></script>
+
+{{!-- Hidden form for updating a review--}}
+
+<div id="update-review-form" style="display: none">
+    <h2>Update a Review</h2>
+    <p>To update a Review, fill out this form</p>
+    <form id="update-review-form-ajax">
+        <input type="hidden" name="update-review-id" id="update-review-id">
+
+        <label for="update-review-date">Date: </label>
+        <input type="date" name="update-review-date" id="update-review-date">
+        
+        <label for="update-score">Score: </label>
+        <input type="number" name="update-score" id="update-score", placeholder = '1-5' min="1" max="5">
+
+        <label for="update-review-text">Review Text: </label>
+        <input type="text" name="update-review-text" id="update-review-text">
+
+        <label for="update-review_user">User: </label>
+        <select name="User" id = "update-review-user">
+            <option value="">Select a User</option>
+            <option value="NULL">Make null</option>
+            {{#each users}}
+            <option value="{{this.user_id}}">{{this.username}}</option>
+            {{/each}}
+        </select>
+
+        <label for="update-review_book">Book Title: </label>
+        <select name="Book Title" id = "update-review-book">
+            <option value="">Select a Book Title</option>
+            {{#each books}}
+            <option value="{{this.book_id}}">{{this.title}}</option>
+            {{/each}}
+        </select>
+
+        <input type="submit" value="update Review">
+
+    </form>
+</div>
+
+<script src="./js/update_review.js"></script>
